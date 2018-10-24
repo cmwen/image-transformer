@@ -1,15 +1,23 @@
 {
-  "name": "image-transform",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.16.4",
-    "sharp": "^0.21.0"
-  }
+    "name": "image-transform",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "jest --outputFile test-results.json --json",
+        "precommit": "pretty-quick --staged",
+        "lint": "eslint src/**/**.js",
+        "start": "node server/app.js"
+    },
+    "author": "ChungMin Wen",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.16.4",
+        "eslint-config-prettier": "^2.9.0",
+        "eslint-plugin-prettier": "^2.6.0",
+        "jest": "^22.4.3",
+        "prettier": "^1.11.1",
+        "pretty-quick": "^1.4.1",
+        "sharp": "^0.21.0"
+    }
 }
