@@ -1,23 +1,31 @@
 {
-    "name": "image-transform",
+    "name": "image-transformer",
     "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
+    "description": "An exercise to use express and sharp to build a on-the-fly image transformer.",
+    "main": "server/app.js",
     "scripts": {
-        "test": "jest --outputFile test-results.json --json",
+        "test": "jest",
+        "test-dev": "jest --watch",
         "precommit": "pretty-quick --staged",
         "lint": "eslint src/**/**.js",
-        "start": "node server/app.js"
+        "start": "node server/app.js",
+        "dev": "nodemon server/app.js"
     },
     "author": "ChungMin Wen",
     "license": "ISC",
     "dependencies": {
-        "express": "^4.16.4",
         "eslint-config-prettier": "^2.9.0",
         "eslint-plugin-prettier": "^2.6.0",
+        "express": "^4.16.4",
         "jest": "^22.4.3",
+        "multer": "^1.4.1",
+        "nodemon": "^1.18.4",
         "prettier": "^1.11.1",
         "pretty-quick": "^1.4.1",
         "sharp": "^0.21.0"
+    },
+    "jest": {
+        "verbose": true,
+        "testURL": "http://localhost/"
     }
 }
