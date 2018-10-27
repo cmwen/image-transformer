@@ -1,5 +1,7 @@
 # image-transformer
 
+[![Build Status](https://travis-ci.org/cmwen/image-transformer.svg?branch=master)](https://travis-ci.org/cmwen/image-transformer)
+
 image-transformer is an exercise to utilize express and sharp to perform an on-the-fly image transformation
 
 ## Development
