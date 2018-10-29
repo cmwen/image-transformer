@@ -1,14 +1,24 @@
-const { parseOptions, calcDimensionByWidthAndHeight, calcDimensionByMaxEdge, isValidDimension, isValidFormat } = require("./image-converter-handler");
+const {
+    parseOptions,
+    calcDimensionByWidthAndHeight,
+    calcDimensionByMaxEdge,
+    isValidDimension,
+    isValidFormat
+} = require("./image-converter-handler");
 
 const { imageConverter } = require("../util/image-converter");
-const { invalidFormatError,invalidDimensionError } = require("../models/error");
+const {
+    invalidFormatError,
+    invalidDimensionError,
+    fileNotFoundError
+} = require("../models/error");
 const {
     OPTION_FORMAT,
     OPTION_MAX,
     OPTION_WIDTH,
-    OPTION_HEIGHT,
-
+    OPTION_HEIGHT
 } = require("../models/option");
+const { retrieveImage, storeImage } = require("../util/image-store");
 
 const DEFAULT_OUTPUT_FORMAT = "jpeg";
 
@@ -28,10 +38,45 @@ exports.collectImageInRequest = function(req, res, next) {
     }
 };
 
-exports.doOriginalImage = function(req, res) {
+exports.doReturnOriginalImage = function(req, res) {
     res.set("Content-Type", req.imageConverter.contentType);
 
     res.send(req.imageConverter.buffer);
+};
+
+exports.getOriginalImageBufferByName = async function(req, res, next) {
+    const index = req.params.filename;
+
+    try {
+        const buf = await retrieveImage(index);
+
+        req.imageConverter = {};
+        req.imageConverter.buffer = buf;
+
+        next();
+    } catch (err) {
+        next(fileNotFoundError(index));
+    }
+};
+
+exports.doGetOriginalImage = async function(req, res) {
+    const converter = imageConverter(req.imageConverter.buffer);
+    const metadata = await converter.getMetadata();
+
+    res.set("Content-Type", `image/${metadata.format}`);
+    res.send(req.imageBuffer);
+};
+
+exports.doSaveImage = async (req, res, next) => {
+    const converter = imageConverter(req.imageConverter.buffer);
+    try {
+        await converter.getMetadata();
+
+        storeImage(req.params.filename, req.imageConverter.buffer);
+        res.sendStatus(200);
+    } catch (err) {
+        next(err);
+    }
 };
 
 exports.doConvert = async function(req, res, next) {
@@ -43,7 +88,10 @@ exports.doConvert = async function(req, res, next) {
     try {
         const metadata = await converter.getMetadata();
 
-        let targetDimension;
+        let targetDimension = {
+            width: metadata.width,
+            height: metadata.height
+        };
         if (options.get(OPTION_WIDTH) && options.get(OPTION_HEIGHT)) {
             targetDimension = calcDimensionByWidthAndHeight(metadata, {
                 w: options.get(OPTION_WIDTH),
@@ -80,5 +128,3 @@ exports.doConvert = async function(req, res, next) {
         next(err);
     }
 };
-
-
