@@ -28,7 +28,7 @@ Run `npm install` or `yarn install` to download and install dependencies.
 
 Using a rest client is suggested. Or you can test with the sample test page by opening URL http://localhost:9999. Note: This test page only use the first API below. You can edit the file at `client\index.html` to switch the API.
 
-When using rest client, simply post a image to http://localhost:9999/image/file.ext. You will send the same image sent back. Nothing interested here. But you send a request to http://localhost:9999/image/options/file.ext, you now have the power to resize and change the format of your image.
+When using rest client, simply post a image to http://localhost:9999/image. You will see the same image came back. Nothing interested here. Post to http://localhost:9999/image/filename will save the uploaded image at `upload` directory. You can get the image back by `GET` http://localhost:/999/image/filename. And if you hit http://localhost:9999/image/options/filename, you now have the power to resize and change the format of your image.
 
 Options includes f_*format*, m_*maxEdge*, w_*width*, h_*height*.
 
@@ -40,6 +40,14 @@ With m_*format*, you specify the max width or hight you want to convert your ima
 
 To combine the options, using `,` to separate them. Example: `f_webp,w_1200,h_800`.
 
+### Configuration
+
+Few settings can be change by exporting environment variable.
+
+- `NODE_PORT` Listening port. Default: `9999`
+- `UPLOAD_LIMIT` Max upload file size. Default: `1000kb`.
+- `UPLOAD_DIR` The directory that will store uploaded file. Default: `./upload`.
+
 ## Features
 
 - Support raw POST request and multipart POST request.
@@ -50,7 +58,6 @@ To combine the options, using `,` to separate them. Example: `f_webp,w_1200,h_80
 ## What's missing
 
 - Logging
-- `file.ext` in the url doesn't do anything.
 - Passing `options` in query parameters.
 - Scripts to build docker image.
-- Make service more configurable.
+- More unit tests
