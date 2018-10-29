@@ -64,7 +64,7 @@ exports.doGetOriginalImage = async function(req, res) {
     const metadata = await converter.getMetadata();
 
     res.set("Content-Type", `image/${metadata.format}`);
-    res.send(req.imageBuffer);
+    res.send(req.imageConverter.buffer);
 };
 
 exports.doSaveImage = async (req, res, next) => {
